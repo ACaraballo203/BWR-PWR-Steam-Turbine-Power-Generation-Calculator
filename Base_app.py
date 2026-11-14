@@ -1,53 +1,80 @@
 #This will be the base code for the app/GUI.
 
-#Packages
+##############Packages
 from tkinter import *
 from tkinter import ttk
 import tkinter as tk
 
-#Create Roor Window
-window = Tk()
+#Create Root Window
+window = tk.Tk()
+
+###############Functions
+def raise_frame(frame):
+    frame.tkraise()
+
 
 # root window title and dimension
 window.title("Nuclear Steam Power Generator Calculator")
 # Set geometry(widthxheight)
-window.geometry('450x200')
+window.geometry('450x350')
 
-# adding menu bar in root window
-# new item in menu bar labelled as 'New'
-# adding more items in the menu bar 
-menu = Menu(window)
-item = Menu(menu)
-item.add_command(label='New')
-menu.add_cascade(label='File', menu=item)
+#Creating Different frames, these are the window for each individual model
+f1 = Frame(window)
+f2 = Frame(window)
+f3 = Frame(window)
+f4 = Frame(window)
+
+#Setting up each Frame
+for frame in (f1, f2, f3, f4):
+    frame.grid(row=0, column=0, sticky='news')
+
+#This is the Start Menu
+Tlable = tk.Label(f1, text='Start Menu', font=("Verdana", 25), padx=130, pady=40).pack()
+
+#Creating our main menu
+menu = Menu(f1)
+
+#Category Items for the menu
+BWR_item = Menu(menu, tearoff=0)
+menu.add_cascade(label='BWR', menu=BWR_item)
+
+PWR_item = Menu(menu, tearoff=0)
+menu.add_cascade(label='PWR', menu=PWR_item)
+
+Comparison_item = Menu(menu, tearoff=0)
+menu.add_cascade(label='Comparison', menu=Comparison_item)
+
+#Creating our subcategory in the menu
+BWR_item.add_command(label='Switch', command=lambda:raise_frame(f2))
+#BWR_item.add_command(label='Open Window', command=lambda:Toplevel(f2))
+
+PWR_item.add_command(label='Switch', command=lambda:raise_frame(f3))
+#PWR_item.add_command(label='Open Window', command=lambda:Toplevel(f3))
+
+Comparison_item.add_command(label='Switch', command=lambda:raise_frame(f4))
+#Comparison_item.add_command(label='Open Window', command=lambda:Toplevel(f4))
+
+#Adds a menu separator
+menu.add_separator()
+menu.add_cascade(label='Quit', command=window.quit)
+
 window.config(menu=menu)
 
-#Adds a text in the GUI
-greeting = tk.Label(text="Hello, Tkinter")
-entry = tk.Entry()
+#Menu Selection
+Button(f1, text='Boiling Water Reactor', command=lambda:raise_frame(f2)).pack()
+Button(f1, text='Pressurized Water Reator', command=lambda:raise_frame(f3)).pack()
+Button(f1, text='Comparison', command=lambda:raise_frame(f4)).pack()
 
-# adding a label to the root window
-lbl = Label(window, text = "Are you a Geek?")
-lbl.grid()
+Label(f2, text='Boiling water Reactor', font=("Verdana", 20)).pack()
+Button(f2, text='Start Menu', command=lambda:raise_frame(f1)).pack()
 
-# adding Entry Field
-txt = Entry(window, width=10)
-txt.grid(column =1, row =0)
+Label(f3, text='Pressurized Water Reactor', font=("Verdana", 20)).pack()
+Button(f3, text='Start Menu', command=lambda:raise_frame(f1)).pack()
 
-# function to display text when
-# button is clicked
-def clicked():
+Label(f4, text='Comparing Both Reactors', font=("Verdana", 20)).pack()
+Button(f4, text='Start Menu', command=lambda:raise_frame(f1)).pack()
 
-    res = "You wrote " + txt.get()
-    lbl.configure(text = res)
-
-# button widget with red color text
-# inside
-btn = Button(window, text = "Click me" ,
-             fg = "red", command=clicked)
-# set Button grid
-btn.grid(column=0, row=1)
-
+raise_frame(f1)
 
 # all widgets will be here
 # Execute Tkinter
